@@ -21,10 +21,10 @@ const GlobalStyles = createGlobalStyle`
 
   body {
   margin: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: linear-gradient(to right, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+  background-color: #14141f;
 }
 
 code {

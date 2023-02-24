@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { colors } from "../../styles/variables";
 
@@ -9,17 +10,14 @@ const RowAnimation = keyframes`
 export const Row = styled.div`
   animation: ${RowAnimation} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   align-items: center;
-  background: ${colors.white};
+  background: ${colors.darkGrey};
   display: grid;
   justify-content: center;
   overflow: hidden;
   padding: 15px 0 20px;
   text-align: center;
   width: 100%;
-
-  &:nth-child(even) {
-    background-color: ${colors.lightGray};
-  }
+  border-bottom: 1px solid ${colors.buttonDisabled};
 
   @media screen and (min-width: 768px) {
     grid-template-columns: 130px auto auto;
@@ -32,10 +30,11 @@ export const Row = styled.div`
 export const RowInfo = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: 16px;
 `;
 
 export const RowNumber = styled.span`
-  color: ${colors.text};
+  color: ${colors.white};
   font-size: 12px;
   font-weight: 600;
   padding: 4px 8px;
@@ -43,16 +42,18 @@ export const RowNumber = styled.span`
 
 export const RowFigure = styled.figure`
   align-items: center;
+  background-image: ${({ type }) => colors.backgrounds[type]};
   display: flex;
   height: 110px;
   justify-content: center;
   width: 100%;
+  border-radius: 4px;
 `;
 
 export const RowImage = styled.img``;
 
 export const RowTitle = styled.h3`
-  color: ${colors.text};
+  color: ${colors.white};
   font-size: 32px;
   padding: 4px 0;
   text-transform: uppercase;
@@ -76,12 +77,15 @@ export const RowPillWrapper = styled.div`
   }
 `;
 
-export const RowPill = styled.span`
+export const RowPill = styled(Link)`
   background: ${({ type }) => colors.pills[type]};
+  border: 1px solid ${colors.background};
   border-radius: 5px;
   color: ${colors.white};
-  font-size: 16px;
+  text-shadow: 2px 1px 2px ${colors.black};
+  font-size: 12px;
+  font-weight: bold;
   margin: 0 4px;
-  padding: 8px 20px;
+  padding: 4px;
   text-transform: uppercase;
 `;

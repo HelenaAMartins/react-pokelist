@@ -1,51 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Container } from "../../styles/shared";
-import * as Styled from "./styled";
 import Pokemon from "../Pokemon";
 import PokemonRow from "../PokemonRow";
+import * as Styled from "./styled";
 
-import load from "../../assets/load.svg";
-import row from "../../assets/row.svg";
-import grid from "../../assets/grid.svg";
+import { ArrowDown } from "../../icons";
 
-const List = () => {
-  const [pokemons, setPokemons] = useState([]);
-  const [nextPage, setNextPage] = useState();
+const List = ({ pokemons, nextPage, isLoading, fetchData }) => {
   const [layout, setLayout] = useState("grid");
-  const [isLoading, setIsLoading] = useState();
+  const options = ["Grid", "Table"];
+  const [isOpen, setIsOpen] = useState(false);
+  const toggling = () => setIsOpen(!isOpen);
 
-  const fetchData = async (url) => {
-    setIsLoading(true);
-    const response = await fetch(url);
-    const data = await response.json();
-    setPokemons([...pokemons, ...data.results]);
-    setNextPage(data.next);
-    setIsLoading(false);
+  const onOptionClicked = (value) => {
+    setLayout(value.toLowerCase());
+    setIsOpen(false);
   };
-
-  useEffect(() => {
-    fetchData("https://pokeapi.co/api/v2/pokemon?limit=150");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Container>
       <Styled.Options>
-        <Styled.LayoutWrapper>
-          <Styled.LayoutButton
-            active={layout === "grid"}
-            onClick={() => setLayout("grid")}
-          >
-            <Styled.LayoutImg src={grid} alt="Ver grid" />
-          </Styled.LayoutButton>
-          <Styled.LayoutButton
-            active={layout === "table"}
-            onClick={() => setLayout("table")}
-          >
-            <Styled.LayoutImg src={row} alt="Ver tabela" />
-          </Styled.LayoutButton>
-        </Styled.LayoutWrapper>
+        <Styled.DropDownContainer>
+          <Styled.DropDownHeader onClick={toggling}>
+            View options <ArrowDown />
+          </Styled.DropDownHeader>
+          {isOpen && (
+            <Styled.DropDownListContainer>
+              <Styled.DropDownList>
+                {options.map((option, index) => (
+                  <Styled.ListItem
+                    onClick={() => onOptionClicked(option)}
+                    key={`options-${index}`}
+                  >
+                    {option}
+                  </Styled.ListItem>
+                ))}
+              </Styled.DropDownList>
+            </Styled.DropDownListContainer>
+          )}
+        </Styled.DropDownContainer>
       </Styled.Options>
 
       <Styled.Grid layout={layout}>
@@ -61,7 +55,7 @@ const List = () => {
             disabled={isLoading}
             onClick={() => fetchData(nextPage)}
           >
-            {isLoading ? <img alt="Loading" src={load} /> : "Load More"}
+            {isLoading ? "Loading..." : "Load More"}
           </Styled.LoadMoreButton>
         )}
       </Styled.LoadWrapper>
